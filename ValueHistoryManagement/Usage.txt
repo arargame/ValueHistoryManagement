@@ -1,0 +1,22 @@
+﻿ TestObject to = new TestObject();
+            var historyManager = new ValueHistoryManager();
+
+
+            historyManager.AddSetting(new ValueHistorySetting("Name", 2, 
+                (previousValue,currentValue) =>
+              {
+                  return !previousValue.Equals(currentValue);
+              }));
+
+            historyManager.AddSetting(new ValueHistorySetting("Id",10));
+
+            //historyManager.AddSettings(to);
+
+			to.Name = "Lebron";
+
+			 historyManager.HasChangedFor(to);
+            //historyManager.HasChangedFor(new ValueHistoryRecord("Name", to.Name));
+
+            historyManager.Update();
+
+            

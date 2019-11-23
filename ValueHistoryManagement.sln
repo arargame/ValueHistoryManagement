@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueHistoryManagement", "ValueHistoryManagement\ValueHistoryManagement.csproj", "{649A2FAA-3665-4E6B-ABF1-3191469DB50C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{D68622AC-2CEE-42E7-A978-A0C425D12A9C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{649A2FAA-3665-4E6B-ABF1-3191469DB50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{649A2FAA-3665-4E6B-ABF1-3191469DB50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{649A2FAA-3665-4E6B-ABF1-3191469DB50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{649A2FAA-3665-4E6B-ABF1-3191469DB50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D68622AC-2CEE-42E7-A978-A0C425D12A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D68622AC-2CEE-42E7-A978-A0C425D12A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D68622AC-2CEE-42E7-A978-A0C425D12A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D68622AC-2CEE-42E7-A978-A0C425D12A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95E75274-1269-44BA-9700-A5EDEFC00C87}
+	EndGlobalSection
+EndGlobal
