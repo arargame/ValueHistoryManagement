@@ -19,40 +19,7 @@ namespace ValueHistoryManagement
             Settings = new List<ValueHistorySetting>();
         }
 
-        public void Update()
-        {
-            foreach (var setting in Settings)
-            {
-                var predicate = new Func<ValueHistoryRecord, bool>((r) => r.PropertyName == setting.PropertyName);
-
-                while (Records.Count(predicate) > setting.Amount)
-                {
-                    Records.Remove(Records.Where(predicate).OrderBy(r => r.RecordDate).First());
-                }
-            }
-        }
-
-        public ValueHistoryManager HasChangedFor(ValueHistoryRecord record)
-        {
-            if(IsRecordHasNewValue(record))
-                Records.Add(record);
-
-            return this;
-        }
-
-        public ValueHistoryManager HasChangedFor(object obj)
-        {
-            foreach (var setting in Settings)
-            {
-                var propertyInfo = obj.GetType().GetProperty(setting.PropertyName);
-
-                HasChangedFor(new ValueHistoryRecord(setting.PropertyName, propertyInfo.GetValue(obj)));
-            }
-
-            return this;
-        }
-
-        public ValueHistoryManager AddSettings(object obj,int defaultAmountForEachProperty = 2)
+        public ValueHistoryManager AddSettings(object obj, int defaultAmountForEachProperty = 2)
         {
             var properties = obj.GetType().GetProperties().Where(p => p.CanWrite);
 
@@ -73,6 +40,51 @@ namespace ValueHistoryManagement
                 var relatedSetting = Settings.FirstOrDefault(s => s.PropertyName == setting.PropertyName);
 
                 relatedSetting.Update(setting.Amount, setting.ControlActionWhetherValueIsNew);
+            }
+
+            return this;
+        }
+
+        public void Update()
+        {
+            foreach (var setting in Settings)
+            {
+                var predicate = new Func<ValueHistoryRecord, bool>((r) => r.PropertyName == setting.PropertyName);
+
+                while (Records.Count(predicate) > setting.Amount)
+                {
+                    Records.Remove(Records.Where(predicate).OrderBy(r => r.RecordDate).First());
+                }
+            }
+        }
+
+        public IEnumerable<ValueHistoryRecord> GetRecords(Func<ValueHistoryRecord,bool> predicate,int? toTake = null)
+        {
+            toTake = toTake ?? Records.Count;
+
+            return Records.Where(predicate).OrderByDescending(r => r.RecordDate).Take(toTake.Value);
+        }
+
+        public IEnumerable<ValueHistoryRecord> GetRecordsByPropertyName(string propertyName,int? toTake = null)
+        {
+            return GetRecords(r => r.PropertyName == propertyName, toTake);
+        }
+
+        public ValueHistoryManager HasChangedFor(ValueHistoryRecord record)
+        {
+            if(IsRecordHasNewValue(record))
+                Records.Add(record);
+
+            return this;
+        }
+
+        public ValueHistoryManager HasChangedFor(object obj)
+        {
+            foreach (var setting in Settings)
+            {
+                var propertyInfo = obj.GetType().GetProperty(setting.PropertyName);
+
+                HasChangedFor(new ValueHistoryRecord(setting.PropertyName, propertyInfo.GetValue(obj)));
             }
 
             return this;
