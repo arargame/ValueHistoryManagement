@@ -100,7 +100,9 @@ namespace ValueHistoryManagement
 
             if (Records.Any(r => r.PropertyName == record.PropertyName))
             {
-                var lastRecord = Records.OrderByDescending(r => r.RecordDate).First();
+                var lastRecord = Records.Where(r => r.PropertyName == record.PropertyName)
+                                        .OrderByDescending(r => r.RecordDate)
+                                        .First();
 
                 var setting = Settings.FirstOrDefault(s => s.PropertyName == record.PropertyName);
 
