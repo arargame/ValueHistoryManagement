@@ -70,24 +70,28 @@ namespace ValueHistoryManagement
             return GetRecords(r => r.PropertyName == propertyName, toTake);
         }
 
-        public ValueHistoryManager HasChangedFor(ValueHistoryRecord record)
+        public bool HasChangedFor(ValueHistoryRecord record)
         {
-            if(IsRecordHasNewValue(record))
+            if (IsRecordHasNewValue(record))
+            {
                 Records.Add(record);
 
-            return this;
+                return true;
+            }
+
+            return false;
         }
 
-        public ValueHistoryManager HasChangedFor(object obj)
+        public bool HasChangedFor(object obj)
         {
             foreach (var setting in Settings)
             {
                 var propertyInfo = obj.GetType().GetProperty(setting.PropertyName);
 
-                HasChangedFor(new ValueHistoryRecord(setting.PropertyName, propertyInfo.GetValue(obj)));
+                return HasChangedFor(new ValueHistoryRecord(setting.PropertyName, propertyInfo.GetValue(obj)));
             }
 
-            return this;
+            return false;
         }
 
         public bool IsRecordHasNewValue(ValueHistoryRecord record)
