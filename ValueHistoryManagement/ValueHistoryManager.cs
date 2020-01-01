@@ -53,16 +53,22 @@ namespace ValueHistoryManagement
 
                 while (Records.Count(predicate) > setting.Amount)
                 {
-                    Records.Remove(Records.Where(predicate).OrderBy(r => r.RecordDate).First());
+                    Records.Remove(Records.Where(predicate)
+                                        .OrderBy(r => r.RecordDate)
+                                        .First());
                 }
             }
         }
 
         public IEnumerable<ValueHistoryRecord> GetRecords(Func<ValueHistoryRecord,bool> predicate,int? toTake = null)
         {
+            Update();
+
             toTake = toTake ?? Records.Count;
 
-            return Records.Where(predicate).OrderByDescending(r => r.RecordDate).Take(toTake.Value);
+            return Records.Where(predicate)
+                            .OrderByDescending(r => r.RecordDate)
+                            .Take(toTake.Value);
         }
 
         public IEnumerable<ValueHistoryRecord> GetRecordsByPropertyName(string propertyName,int? toTake = null)
@@ -74,7 +80,17 @@ namespace ValueHistoryManagement
         {
             if (IsRecordHasNewValue(record))
             {
+                if (Records.Count > 0 && Records.Any(r => r.PropertyName == record.PropertyName))
+                {
+                    var maxRecordDate = Records.Where(r => r.PropertyName == record.PropertyName).Max(r => r.RecordDate);
+
+                    if (maxRecordDate >= record.RecordDate)
+                        record.RecordDate = maxRecordDate.AddTicks(1);
+                }
+
                 Records.Add(record);
+
+                Update();
 
                 return true;
             }
